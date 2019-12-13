@@ -1,16 +1,39 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
+import { BasketComponent } from './basket/basket.component';
+import { PageNotFoundComponent } from './pageNotFound/pageNotFound.component';
+import { MainComponent } from './main/main.component';
+
+const appRoutes: Routes = [
+  { path: '', component: MainComponent },
+  { path: 'basket', component: BasketComponent },
+  { path: '**', component: PageNotFoundComponent },
+];
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    BasketComponent,
+    PageNotFoundComponent,
+    MainComponent,
   ],
   imports: [
-    BrowserModule
+    RouterModule.forRoot(
+      appRoutes,
+      { enableTracing: true }
+    ),
+    BrowserModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  entries = [
+    { name: 'Gucci Boots' }
+  ];
+ }

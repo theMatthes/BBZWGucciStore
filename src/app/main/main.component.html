@@ -1,0 +1,11 @@
+<div class="row">
+  <div class="col-3">
+    <div class="card">
+      <div class="card-body" *ngFor="let product of products.products">
+		<h5 class="card-title">{{ product.name }}</h5>
+		<img src="/img/{{ product.URI }}" class="w-100 card-body" />
+        <p class="card-text">{{ product.price | currency: 'CHF ' }}</p>
+      </div>
+    </div>
+  </div>
+</div>
