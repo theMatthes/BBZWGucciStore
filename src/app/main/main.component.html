@@ -1,9 +1,9 @@
 <div class="row">
-  <div class="col-3">
+  <div class="col-xl-3 col-md-4 col-sm-12 mt-2" *ngFor="let product of products.products">
     <div class="card">
-      <div class="card-body" *ngFor="let product of products.products">
-		<h5 class="card-title">{{ product.name }}</h5>
-		<img src="/img/{{ product.URI }}" class="w-100 card-body" />
+      <div class="card-body product">
+        <h5 class="card-title">{{ product.name }}</h5>
+        <img src="/img/{{ product.URI }}" class="mw-100" />
         <p class="card-text">{{ product.price | currency: 'CHF ' }}</p>
       </div>
     </div>
