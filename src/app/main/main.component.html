@@ -1,11 +1,12 @@
 <div class="row">
-  <div class="col-xl-3 col-md-4 col-sm-12 mt-2" *ngFor="let product of products.products">
-    <div class="card">
-      <div class="card-body product">
+  <div class="col-xl-3 col-md-4 col-sm-12 mt-2 px-1" *ngFor="let product of products.products">
+    <a class="card product" href="{{ product.id }}" (click="")>
+      <div class="card-body">
         <h5 class="card-title">{{ product.name }}</h5>
         <img src="/img/{{ product.URI }}" class="mw-100" />
-        <p class="card-text">{{ product.price | currency: 'CHF ' }}</p>
+        <span class="card-text">{{ product.actionPrice() | currency: 'CHF ' }}&nbsp;</span>
+        <span class="card-text text-warning"><del>{{ product.price | currency: 'CHF ' }}</del></span>
       </div>
-    </div>
+    </a>
   </div>
 </div>
