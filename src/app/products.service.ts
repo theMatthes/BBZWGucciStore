@@ -26,7 +26,7 @@ export class ProductService {
   public getShoppingKart(): Array<Product> {
     return this.shoppingKart;
   }
-  public addProuct(product: Product) {
-    this.shoppingKart.add(this.shoppingKart);
+  public addProduct(product: Product) {
+    this.shoppingKart.push(product);
   }
 }
