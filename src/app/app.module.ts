@@ -7,10 +7,12 @@ import { AppComponent } from './app.component';
 import { BasketComponent } from './basket/basket.component';
 import { PageNotFoundComponent } from './pageNotFound/pageNotFound.component';
 import { MainComponent } from './main/main.component';
+import { DetailsComponent } from './details/details.component';
 
 const appRoutes: Routes = [
   { path: '', component: MainComponent },
   { path: 'basket', component: BasketComponent },
+  { path: 'details/:id', component: DetailsComponent },
   { path: '**', component: PageNotFoundComponent },
 ];
 
@@ -20,6 +22,7 @@ const appRoutes: Routes = [
     BasketComponent,
     PageNotFoundComponent,
     MainComponent,
+    DetailsComponent,
   ],
   imports: [
     RouterModule.forRoot(
@@ -32,8 +35,4 @@ const appRoutes: Routes = [
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-  entries = [
-    { name: 'Gucci Boots' }
-  ];
- }
+export class AppModule { }

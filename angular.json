@@ -30,7 +30,7 @@
             ],
             "styles": [
               "src/styles.scss",
-              "bootstrap.css"
+              "src/bootstrap.css"
             ],
             "scripts": [
             ]
