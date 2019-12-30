@@ -13,12 +13,16 @@ export class DetailsComponent implements OnInit {
   constructor(private route: ActivatedRoute) {
   }
   ngOnInit(): void {
-    this.route.paramMap.pipe(
-      switchMap((value: ParamMap, index: number) => {
-        console.log(value, +value.get('id'), arguments);
-        this.product = new ProductService().getProductByID(+value.get('id'));
-        return [];
-      })
-    );
+    this.product = new ProductService().getProductByID(+this.route.snapshot.params.id);
+    console.log(this.route.snapshot.params.id);
+    this.route.paramMap.subscribe(params => {
+    });
+    // this.route.paramMap.pipe(
+    //   switchMap((value: ParamMap, index: number) => {
+    //     console.log(value, +value.get('id'), arguments);
+    //     this.product = new ProductService().getProductByID(+value.get('id'));
+    //     return [];
+    //   })
+    // );
   }
 }
