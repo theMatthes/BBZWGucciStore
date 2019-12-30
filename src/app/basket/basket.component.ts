@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService, Product } from '../products.service';
+import { ProductService, Product, IShoppingKartItem } from '../products.service';
 
 @Component({
   selector: 'app-basket',
@@ -8,6 +8,9 @@ import { ProductService, Product } from '../products.service';
 })
 export class BasketComponent implements OnInit {
   products = new ProductService();
+  addRemoveProduct(currentProduct: Product, remove: boolean) {
+    this.products.removeProduct(currentProduct)
+  }
   constructor() { }
   ngOnInit() {
   }

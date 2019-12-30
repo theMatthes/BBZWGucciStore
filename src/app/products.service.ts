@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NgIf } from '@angular/common';
-interface IShoppingKartItem {
+export interface IShoppingKartItem {
   count: number;
   product: Product;
 }
@@ -33,6 +33,11 @@ export class ProductService {
       ProductService.products.push(new Product(6, 'Striped silk linen jacket with feline', 'img6.jpg', 2200));
       ProductService.products.push(new Product(7, 'Linen jacket with "Cassandra" patch', 'img7.jpg', 3250));
       ProductService.products.push(new Product(8, 'Gucci Bestiary backpack with tigers', 'img8.jpg', 1770));
+
+      this.addProduct(ProductService.products[0]);
+      this.addProduct(ProductService.products[2]);
+      this.addProduct(ProductService.products[3]);
+      this.addProduct(ProductService.products[0]);
     }
   }
   private static shoppingKart: Array<IShoppingKartItem> = [];
@@ -54,7 +59,7 @@ export class ProductService {
     return ProductService.products;
   }
   public getShoppingKart(): Array<IShoppingKartItem> {
-    return ProductService.shoppingKart;
+    return ProductService.shoppingKart.sort();
   }
   public getShoppingKartLength(): number {
     let count = 0;
@@ -65,6 +70,14 @@ export class ProductService {
   }
   public getProductTotal(kartItem: IShoppingKartItem): number {
     return kartItem.product.discontPrice * kartItem.count;
+  }
+  public getGrandTotal() {
+    const kart = this.getShoppingKart();
+    let total = 0;
+    kart.forEach(kartItem => {
+      total += this.getProductTotal(kartItem);
+    });
+    return total;
   }
   public addProduct(newProduct: Product) {
     let alreadyIsInKart = false;
@@ -81,5 +94,16 @@ export class ProductService {
       };
       ProductService.shoppingKart.push(productToAdd);
     }
+  }
+  public removeProduct(oldProduct: Product) {
+    ProductService.shoppingKart.forEach((kartItem, index, array) => {
+      if (kartItem.product === oldProduct) {
+        kartItem.count -= 1;
+        if (kartItem.count < 1) {
+          console.log(kartItem.count, index, array);
+          array.splice(index, 1);
+        }
+      }
+    });
   }
 }

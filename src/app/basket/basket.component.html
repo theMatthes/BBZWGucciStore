@@ -1,19 +1,37 @@
-<table class="table">
-  <tr>
-    <th>Artikel</th>
-    <th>Stückpreis</th>
-    <th>Anzahl</th>
-    <th>Gesamtpreis</th>
-  </tr>
-  <tr *ngFor="let kartItem of products.getShoppingKart()">
-    <td><a routerLink="/details/{{ kartItem.product.id }}">{{ kartItem.product.name }}</a></td>
-    <td>
-      <span class="card-text">{{ kartItem.product.discontPrice | currency: 'CHF ' }}&nbsp;</span>
-      <span class="card-text text-warning"><del>{{ kartItem.product.price | currency: 'CHF ' }}</del></span>
-    </td>
-    <td>{{ kartItem.count }}</td>
-    <td>
-      {{ products.getProductTotal(kartItem) | currency: 'CHF '}}
-    </td>
-  </tr>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Artikel</th>
+      <th>Stückpreis</th>
+      <th>Anzahl</th>
+      <th>Gesamtpreis</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let kartItem of products.getShoppingKart()">
+      <td><a routerLink="/details/{{ kartItem.product.id }}">{{ kartItem.product.name }}</a></td>
+      <td>
+        <span class="card-text">{{ kartItem.product.discontPrice | currency: 'CHF ' }}&nbsp;</span>
+        <span class="card-text text-warning"><del>{{ kartItem.product.price | currency: 'CHF ' }}</del></span>
+      </td>
+      <td>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <button class="btn btn-outline-info productCountBtn" type="button" (click)="products.removeProduct(kartItem.product)">-</button>
+          </div>
+		  <span type="text" disabled class="productCountText">{{ kartItem.count }}</span>
+		  <div class="input-group-append">
+			  <button class="btn btn-outline-info productCountBtn" type="button" (click)="products.addProduct(kartItem.product)">+</button>
+		  </div>
+        </div>
+      </td>
+      <td>
+        {{ products.getProductTotal(kartItem) | currency: 'CHF '}}
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3"></td>
+      <td>{{ products.getGrandTotal() | currency: 'CHF ' }}</td>
+    </tr>
+  </tbody>
 </table>
