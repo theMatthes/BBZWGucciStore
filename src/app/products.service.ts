@@ -56,10 +56,21 @@ export class ProductService {
   public getShoppingKart(): Array<IShoppingKartItem> {
     return ProductService.shoppingKart;
   }
+  public getShoppingKartLength(): number {
+    let count = 0;
+    this.getShoppingKart().forEach(kartItem => {
+      count += kartItem.count;
+    });
+    return count;
+  }
+  public getProductTotal(kartItem: IShoppingKartItem): number {
+    return kartItem.product.discontPrice * kartItem.count;
+  }
   public addProduct(newProduct: Product) {
     let alreadyIsInKart = false;
     ProductService.shoppingKart.forEach(kartItem => {
       if (kartItem.product === newProduct) {
+        kartItem.count += 1;
         alreadyIsInKart = true;
       }
     });
