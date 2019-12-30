@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgModule } from '@angular/core';
 import { NgIf } from '@angular/common';
 export interface IShoppingKartItem {
   count: number;
