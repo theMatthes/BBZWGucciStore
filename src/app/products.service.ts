@@ -7,15 +7,17 @@ export interface IShoppingKartItem {
 export class Product {
   public id: number;
   public name: string;
+  public description: string;
   public image: string;
   public price: number;
   public discontPrice: number;
   public getActualPrice(): number {
     return 1;
   }
-  constructor(id: number, name: string, image: string, price: number) {
+  constructor(id: number, name: string, description: string, image: string, price: number) {
     this.id = id;
     this.name = name;
+    this.description = description;
     this.image = image;
     this.price = price;
     this.discontPrice = Math.round((this.price * .9) / 100) * 100 - 1;
@@ -25,14 +27,14 @@ export class ProductService {
   public static products: Array<Product> = [];
   constructor() {
     if (!ProductService.products.length) {
-      ProductService.products.push(new Product(1, 'Wool alpaca jacquard cardigan', 'img1.jpg', 6281));
-      ProductService.products.push(new Product(2, 'Tweed dress with detachable elements', 'img2.jpg', 4300));
-      ProductService.products.push(new Product(3, 'Leather ankle boot with Sylvie Web', 'img3.jpg', 1200));
-      ProductService.products.push(new Product(4, 'Loafers with specal elegance', 'img4.jpg', 1450));
-      ProductService.products.push(new Product(5, 'Mask sunglasses with star rivets', 'img5.jpg', 955));
-      ProductService.products.push(new Product(6, 'Striped silk linen jacket with feline', 'img6.jpg', 2200));
-      ProductService.products.push(new Product(7, 'Linen jacket with "Cassandra" patch', 'img7.jpg', 3250));
-      ProductService.products.push(new Product(8, 'Gucci Bestiary backpack with tigers', 'img8.jpg', 1770));
+      ProductService.products.push(new Product(1, 'Wool alpaca jacquard cardigan', 'Made in china', 'img1.jpg', 6281));
+      ProductService.products.push(new Product(2, 'Tweed dress with detachable elements', 'Made in china', 'img2.jpg', 4300));
+      ProductService.products.push(new Product(3, 'Leather ankle boot with Sylvie Web', 'Made in china', 'img3.jpg', 1200));
+      ProductService.products.push(new Product(4, 'Loafers with specal elegance', 'Made in china', 'img4.jpg', 1450));
+      ProductService.products.push(new Product(5, 'Mask sunglasses with star rivets', 'Made in china', 'img5.jpg', 955));
+      ProductService.products.push(new Product(6, 'Striped silk linen jacket with feline', 'Made in china', 'img6.jpg', 2200));
+      ProductService.products.push(new Product(7, 'Linen jacket with "Cassandra" patch', 'Made in china', 'img7.jpg', 3250));
+      ProductService.products.push(new Product(8, 'Gucci Bestiary backpack with tigers', 'Made in china', 'img8.jpg', 1770));
 
       this.addProduct(ProductService.products[0]);
       this.addProduct(ProductService.products[2]);
