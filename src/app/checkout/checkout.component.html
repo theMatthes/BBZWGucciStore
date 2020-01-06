@@ -1,15 +1,12 @@
 <button [swal]="['Oops!', 'This is not implemented yet :/', 'warning']">
   Do it!
 </button>
-<form (submit)="checkoutForm()">
+<form [formGroup]="checkoutForm" (ngSubmit)="onSubmit(checkoutForm.value)">
   <label for="name">Vorname</label>
-  <input class="form-control" id="firstname" name="firstname" minlength="3" maxlength="50" required />
+  <input class="form-control" id="firstname" formControlName="firstname" minlength="3" maxlength="50" required />
   <label for="street">Nachname</label>
-  <input class="form-control" id="lastname" name="lastname" minlength="3" maxlength="50" required />
-  <label for="store">Gucci-Store zur Abholung</label>
-  <select class="form-control" name="store" id="store" required>
-    <option value="">--Auswählen--</option>
-    <option *ngFor="let store of stores">{{ store }}</option>
-  </select>
+  <input class="form-control" id="lastname" formControlName="lastname" minlength="3" maxlength="50" required />
+  <label for="email">E-Mail-Addresse</label>
+  <input class="form-control" id="email" formControlName="email" type="email" required />
   <button type="submit" class="mt-2 btn btn-gucci">Absenden</button>
 </form>

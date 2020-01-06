@@ -108,4 +108,7 @@ export class ProductService {
       }
     });
   }
+  clearKart() {
+    ProductService.shoppingKart = [];
+  }
 }

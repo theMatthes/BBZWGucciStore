@@ -9,11 +9,12 @@ import { switchMap } from 'rxjs/operators';
   styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent implements OnInit {
+  products = new ProductService();
   product: Product;
   constructor(private route: ActivatedRoute) {
   }
   ngOnInit(): void {
-    this.product = new ProductService().getProductByID(+this.route.snapshot.params.id);
+    this.product = this.products.getProductByID(+this.route.snapshot.params.id);
     console.log(this.route.snapshot.params.id);
     this.route.paramMap.subscribe(params => {
     });
