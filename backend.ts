@@ -1,6 +1,14 @@
-const express = require('express');
-const path = require('path');
+import * as express from 'express';
+import * as path from 'path';
+import { Product } from 'src/app/products.service';
+
 const app = express();
+
+
+app.post('/api/checkout', (req, res) => {
+
+});
+app.get('/api/price')
 
 app.use(express.static(path.join(__dirname, '/dist/BBZWGucciStore')));
 
@@ -8,7 +16,6 @@ app.use(express.static(path.join(__dirname, '/dist/BBZWGucciStore')));
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, '/dist/BBZWGucciStore', 'index.html'));
 });
-
 app.listen(3000, () => {
   console.log('Example app listening on port 3000!');
 });
