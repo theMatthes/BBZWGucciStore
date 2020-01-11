@@ -7,11 +7,10 @@ import { ProductService, Product, IShoppingKartItem } from '../products.service'
   styleUrls: ['./basket.component.scss']
 })
 export class BasketComponent implements OnInit {
-  products = new ProductService();
   addRemoveProduct(currentProduct: Product, remove: boolean) {
-    this.products.removeProduct(currentProduct);
+    this.productService.removeProduct(currentProduct);
   }
-  constructor() { }
+  constructor(public productService: ProductService) {  }
   ngOnInit() {
   }
 

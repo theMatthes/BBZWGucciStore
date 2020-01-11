@@ -10,13 +10,13 @@ import { ProductService } from '../products.service';
 })
 export class CheckoutComponent implements OnInit {
   submitted: boolean;
-  products = new ProductService();
   stores = ['Aargau', 'Bern', 'Fribourg', 'Luzern', 'Olten', 'Lausanne', 'Zürich'];
   checkoutForm: FormGroup;
   // checkout;
   constructor(
     private formBuilder: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
+    public productService: ProductService
   ) {
 
   }
@@ -48,7 +48,7 @@ export class CheckoutComponent implements OnInit {
     // Process checkout data here
     console.warn('Your order has been submitted', this.checkoutForm);
 
-    this.products.clearKart();
+    this.productService.clearKart();
     this.checkoutForm.reset();
   }
 

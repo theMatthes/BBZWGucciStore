@@ -8,7 +8,7 @@ import { ProductService } from './products.service';
 })
 
 export class AppComponent {
-  products = new ProductService();
+  constructor(public productService: ProductService) { }
   // products = AppComponent.forRoot()
 
   title = 'BBZW Gucci Store';

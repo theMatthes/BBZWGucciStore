@@ -38,12 +38,30 @@ export class ProductService {
   // }
   public async getProducts(): Promise<Array<Product>> {
     if (!ProductService.products.length) {
-      const body = await this.http.get('/assets/products.json').toPromise();
-      console.log('body', body);
-      // this.products = JSON.parse(body);
-    } else {
-      return ProductService.products;
+      const body: Array<any> = await this.http.get('/assets/products.json').toPromise() as Array<any>;
+      console.log(body);
+      body.forEach((product => {
+        ProductService.products.push(new Product(
+          product[0],
+          product[1],
+          product[2],
+          product[3],
+          product[4]
+        ));
+      }).bind(this));
+      console.log(ProductService.products);
+      // ProductService.products.push(new Product(1, '1', '1', '1', 1));
+      // body.forEach(element => {
+
+      // });
+      // for (let item in body) {
+      //   ProductService.products.push(new Product(item[0]))
+      // }
+      // ProductService.products = Product.prototype.constructor.apply(, body);
+      // console.log(ProductService.products, body);
+      // // this.products = JSON.parse(body);
     }
+    return ProductService.products;
   }
   public getPrice() {
     let sum: number;
