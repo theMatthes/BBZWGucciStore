@@ -1,6 +1,12 @@
+// const bodyParser = require('body-parser');
 const express = require('express');
 const path = require('path');
 const app = express();
+
+app.post('/api/checkout', (req, res) => {
+  res.send(JSON.stringify(res.post));
+});
+
 
 app.use(express.static(path.join(__dirname, '/dist/BBZWGucciStore')));
 
