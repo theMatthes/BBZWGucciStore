@@ -12,6 +12,7 @@ import { PageNotFoundComponent } from './pageNotFound/pageNotFound.component';
 import { MainComponent } from './main/main.component';
 import { DetailsComponent } from './details/details.component';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { ProductService } from './products.service';
 
 const appRoutes: Routes = [
   { path: '', component: MainComponent },
@@ -40,9 +41,12 @@ const appRoutes: Routes = [
     HttpClientModule,
     NgbModule,
     // FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    // ProductService
   ],
-  providers: [],
+  providers: [
+    ProductService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-
+import { Injectable, NgModule } from '@angular/core';
+import { NgIf } from '@angular/common';
 export interface IShoppingKartItem {
   count: number;
   product: Product;
@@ -24,28 +23,27 @@ export class Product {
     this.discontPrice = Math.round((this.price * .9) / 100) * 100 - 1;
   }
 }
-@Injectable({
-  providedIn: 'root',
-})
-// https://itnext.io/how-to-create-a-service-with-httpclient-and-injectable-in-angular-9-8-e3cc50c24c83
 export class ProductService {
-  private static products: Array<Product> = [];
-  private static shoppingKart: Array<IShoppingKartItem> = [];
-  // private static http: HttpClient;
-  constructor(private http: HttpClient) { }
-  // constructor(@Optional() http: HttpClient) {
-  //   if (http) { ProductService.http = http; }
-  // }
-  public async getProducts(): Promise<Array<Product>> {
+  public static products: Array<Product> = [];
+  constructor() {
     if (!ProductService.products.length) {
-      const body = await this.http.get('/assets/products.json').toPromise();
-      console.log('body', body);
-      // this.products = JSON.parse(body);
-    } else {
-      return ProductService.products;
+      ProductService.products.push(new Product(1, 'Wool alpaca jacquard cardigan', 'Made in china', 'img1.jpg', 6281));
+      ProductService.products.push(new Product(2, 'Tweed dress with detachable elements', 'Made in china', 'img2.jpg', 4300));
+      ProductService.products.push(new Product(3, 'Leather ankle boot with Sylvie Web', 'Made in china', 'img3.jpg', 1200));
+      ProductService.products.push(new Product(4, 'Loafers with specal elegance', 'Made in china', 'img4.jpg', 1450));
+      ProductService.products.push(new Product(5, 'Mask sunglasses with star rivets', 'Made in china', 'img5.jpg', 955));
+      ProductService.products.push(new Product(6, 'Striped silk linen jacket with feline', 'Made in china', 'img6.jpg', 2200));
+      ProductService.products.push(new Product(7, 'Linen jacket with "Cassandra" patch', 'Made in china', 'img7.jpg', 3250));
+      ProductService.products.push(new Product(8, 'Gucci Bestiary backpack with tigers', 'Made in china', 'img8.jpg', 1770));
+
+      this.addProduct(ProductService.products[0]);
+      this.addProduct(ProductService.products[2]);
+      this.addProduct(ProductService.products[3]);
+      this.addProduct(ProductService.products[0]);
     }
   }
-  public getPrice() {
+  private static shoppingKart: Array<IShoppingKartItem> = [];
+  public static getPrice() {
     let sum: number;
     ProductService.products.forEach(element => {
       sum += element.price;
@@ -58,6 +56,9 @@ export class ProductService {
       }
     }
     return null;
+  }
+  public getProducts() {
+    return ProductService.products;
   }
   public getShoppingKart(): Array<IShoppingKartItem> {
     return ProductService.shoppingKart.sort();

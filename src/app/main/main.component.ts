@@ -6,8 +6,8 @@ import { ProductService } from '../products.service';
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit {
-  products = new ProductService();
-  constructor() { }
+
+  constructor(public productService: ProductService) { }
 
   ngOnInit() {
   }
