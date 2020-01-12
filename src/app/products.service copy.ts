@@ -102,7 +102,7 @@ export class ProductService {
       if (kartItem.product === oldProduct) {
         kartItem.count -= 1;
         if (kartItem.count < 1) {
-          console.log(kartItem.count, index, array);
+          // console.log(kartItem.count, index, array);
           array.splice(index, 1);
         }
       }

@@ -50,16 +50,6 @@ export class ProductService {
         ));
       }).bind(this));
       console.log(ProductService.products);
-      // ProductService.products.push(new Product(1, '1', '1', '1', 1));
-      // body.forEach(element => {
-
-      // });
-      // for (let item in body) {
-      //   ProductService.products.push(new Product(item[0]))
-      // }
-      // ProductService.products = Product.prototype.constructor.apply(, body);
-      // console.log(ProductService.products, body);
-      // // this.products = JSON.parse(body);
     }
     return ProductService.products;
   }
@@ -77,7 +67,9 @@ export class ProductService {
     }
     return null;
   }
-  public getShoppingKart(): Array<IShoppingKartItem> {
+  public async getShoppingKart() {
+    const body: Array<any> = await this.http.get('/api/shoppingKart').toPromise() as Array<any>;
+  
     return ProductService.shoppingKart.sort();
   }
   public getShoppingKartLength(): number {
