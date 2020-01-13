@@ -10,7 +10,7 @@ import { ProductService } from './products.service';
 export class AppComponent {
   constructor(public productService: ProductService) { }
   // products = AppComponent.forRoot()
-
+  grandTotal = this.productService.getGrandTotal();
   title = 'BBZW Gucci Store';
   isMenuCollapsed = true;
   static forRoot(config: ProductService): ModuleWithProviders {

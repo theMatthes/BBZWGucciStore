@@ -8,7 +8,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let kartItem of products.getShoppingKart()">
+    <tr *ngFor="let kartItem of shoppingKart | async">
       <td><a routerLink="/details/{{ kartItem.product.id }}">{{ kartItem.product.name }}</a></td>
       <td>
         <span class="card-text">{{ kartItem.product.discontPrice | currency: 'CHF ' }}&nbsp;</span>
@@ -17,22 +17,22 @@
       <td>
         <div class="input-group">
           <div class="input-group-prepend">
-            <button class="btn btn-outline-info productCountBtn" type="button" (click)="products.removeProduct(kartItem.product)">-</button>
+            <button class="btn btn-outline-info productCountBtn" type="button" (click)="productService.removeProduct(kartItem.product)">-</button>
           </div>
 		  <span type="text" disabled class="productCountText">{{ kartItem.count }}</span>
 		  <div class="input-group-append">
-			  <button class="btn btn-outline-info productCountBtn" type="button" (click)="products.addProduct(kartItem.product)">+</button>
+			  <button class="btn btn-outline-info productCountBtn" type="button" (click)="productService.addProduct(kartItem.product)">+</button>
 		  </div>
         </div>
       </td>
       <td>
-        {{ products.getProductTotal(kartItem) | currency: 'CHF '}}
+        {{ productService.getProductTotal(kartItem) | async | currency: 'CHF '}}
       </td>
     </tr>
     <tr class="bg-white">
       <td colspan="3"></td>
-      <td>{{ products.getGrandTotal() | currency: 'CHF ' }}</td>
+      <td>{{ grandTotal | async | currency: 'CHF ' }}</td>
     </tr>
   </tbody>
 </table>
-<a routerLink="/checkout" class="btn btn-gucci" *ngIf="products.getShoppingKartLength()">Checkout</a>
+<a routerLink="/checkout" class="btn btn-gucci" *ngIf="shoppingKartLength | async">Checkout</a>

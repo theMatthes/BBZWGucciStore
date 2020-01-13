@@ -39,7 +39,6 @@ export class ProductService {
   public async getProducts(): Promise<Array<Product>> {
     if (!ProductService.products.length) {
       const body: Array<any> = await this.http.get('/assets/products.json').toPromise() as Array<any>;
-      console.log(body);
       body.forEach((product => {
         ProductService.products.push(new Product(
           product[0],
@@ -48,18 +47,7 @@ export class ProductService {
           product[3],
           product[4]
         ));
-      }).bind(this));
-      console.log(ProductService.products);
-      // ProductService.products.push(new Product(1, '1', '1', '1', 1));
-      // body.forEach(element => {
-
-      // });
-      // for (let item in body) {
-      //   ProductService.products.push(new Product(item[0]))
-      // }
-      // ProductService.products = Product.prototype.constructor.apply(, body);
-      // console.log(ProductService.products, body);
-      // // this.products = JSON.parse(body);
+      }));
     }
     return ProductService.products;
   }
@@ -69,20 +57,25 @@ export class ProductService {
       sum += element.price;
     });
   }
-  public getProductByID(id: number): Product {
-    for (const product of ProductService.products) {
+  public async getProductByID(id: number)  {
+    for (const product of await this.getProducts()) {
       if (+product.id === +id) {
         return product;
       }
     }
     return null;
   }
-  public getShoppingKart(): Array<IShoppingKartItem> {
+  public async getShoppingKart() {
+    const kart = [];
+    const body: Array<any> = await this.http.get('/api/shoppingKart').toPromise() as Array<any>;
+    body.forEach((product => {
+      kart.push(this.getProductByID(product));
+    }));
     return ProductService.shoppingKart.sort();
   }
-  public getShoppingKartLength(): number {
+  public async getShoppingKartLength() {
     let count = 0;
-    this.getShoppingKart().forEach(kartItem => {
+    (await this.getShoppingKart()).forEach(kartItem => {
       count += kartItem.count;
     });
     return count;
@@ -90,8 +83,8 @@ export class ProductService {
   public getProductTotal(kartItem: IShoppingKartItem): number {
     return kartItem.product.discontPrice * kartItem.count;
   }
-  public getGrandTotal() {
-    const kart = this.getShoppingKart();
+  public async getGrandTotal() {
+    const kart = await this.getShoppingKart();
     let total = 0;
     kart.forEach(kartItem => {
       total += this.getProductTotal(kartItem);

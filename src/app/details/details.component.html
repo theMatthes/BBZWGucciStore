@@ -7,6 +7,6 @@
     <span class="">{{ product.discontPrice | currency: 'CHF ' }}&nbsp;</span>
     <span class="text-warning"><del>{{ product.price | currency: 'CHF ' }}</del></span>
     <p>{{ product.description }}</p>
-    <button class="btn btn-gucci" (click)="products.addProduct(product)">Zum Warenkorb hinzufügen</button>
+    <button class="btn btn-gucci" (click)="productService.addProduct(product)">Zum Warenkorb hinzufügen</button>
   </div>
 </div>
