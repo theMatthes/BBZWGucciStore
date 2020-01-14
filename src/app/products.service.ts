@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { AppComponent } from './app.component';
+import { Observable, Subject } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 export interface IShoppingKartItem {
   count: number;
-  product: Product;
+  productId: number;
+  product?: Product;
 }
 export class Product {
   public id: number;
@@ -31,11 +35,9 @@ export class Product {
 export class ProductService {
   private static products: Array<Product> = [];
   private static shoppingKart: Array<IShoppingKartItem> = [];
+  public kartSubject = new Subject<IShoppingKartItem>();
   // private static http: HttpClient;
   constructor(private http: HttpClient) { }
-  // constructor(@Optional() http: HttpClient) {
-  //   if (http) { ProductService.http = http; }
-  // }
   public async getProducts(): Promise<Array<Product>> {
     if (!ProductService.products.length) {
       const body: Array<any> = await this.http.get('/assets/products.json').toPromise() as Array<any>;
@@ -51,33 +53,42 @@ export class ProductService {
     }
     return ProductService.products;
   }
+  shoppingKartChange(): Observable<any> {
+    return this.kartSubject.asObservable();
+  }
+  onKartUpdate(kartItem?: IShoppingKartItem) {
+    this.kartSubject.next();
+  }
   public getPrice() {
     let sum: number;
     ProductService.products.forEach(element => {
       sum += element.price;
     });
   }
-  public async getProductByID(id: number)  {
-    for (const product of await this.getProducts()) {
-      if (+product.id === +id) {
-        return product;
+  public async getProductByID(id: number) {
+    for (const kartItem of await this.getProducts()) {
+      if (+kartItem.id === +id) {
+        return kartItem;
       }
     }
     return null;
   }
-  public async getShoppingKart() {
-    const kart = [];
-    const body: Array<any> = await this.http.get('/api/shoppingKart').toPromise() as Array<any>;
-    body.forEach((product => {
-      kart.push(this.getProductByID(product));
-    }));
-    return ProductService.shoppingKart.sort();
+  public async getShoppingKart(full = false) {
+    const kart: Array<IShoppingKartItem> = [];
+    const body: Array<any> = await this.http.get('/api/shoppingKart').toPromise() as Array<IShoppingKartItem>;
+    for (const product of body) {
+      product.product = await this.getProductByID(product.productId);
+      kart.push(product);
+      // switchMap(this.kartSubject)
+      // this.kartSubject.switchMap();
+    }
+    return kart;
   }
   public async getShoppingKartLength() {
     let count = 0;
-    (await this.getShoppingKart()).forEach(kartItem => {
+    for (const kartItem of (await this.getShoppingKart())) {
       count += kartItem.count;
-    });
+    }
     return count;
   }
   public getProductTotal(kartItem: IShoppingKartItem): number {
@@ -86,12 +97,13 @@ export class ProductService {
   public async getGrandTotal() {
     const kart = await this.getShoppingKart();
     let total = 0;
-    kart.forEach(kartItem => {
-      total += this.getProductTotal(kartItem);
-    });
+    for (const kartItem of kart) {
+      total += await this.getProductTotal(kartItem);
+    }
     return total;
   }
-  public addProduct(newProduct: Product) {
+  public async addProduct(newProduct: Product) {
+    await this.http.get('/api/shoppingKart/add/' + newProduct.id).toPromise();
     let alreadyIsInKart = false;
     ProductService.shoppingKart.forEach(kartItem => {
       if (kartItem.product === newProduct) {
@@ -102,12 +114,15 @@ export class ProductService {
     if (!alreadyIsInKart) {
       const productToAdd: IShoppingKartItem = {
         count: 1,
+        productId: newProduct.id,
         product: newProduct
       };
       ProductService.shoppingKart.push(productToAdd);
     }
+    this.onKartUpdate();
   }
-  public removeProduct(oldProduct: Product) {
+  public async removeProduct(oldProduct: Product) {
+    await this.http.get('/api/shoppingKart/remove/' + oldProduct.id).toPromise();
     ProductService.shoppingKart.forEach((kartItem, index, array) => {
       if (kartItem.product === oldProduct) {
         kartItem.count -= 1;
@@ -117,6 +132,7 @@ export class ProductService {
         }
       }
     });
+    this.onKartUpdate();
   }
   clearKart() {
     ProductService.shoppingKart = [];

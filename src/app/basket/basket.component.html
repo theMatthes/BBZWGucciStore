@@ -17,16 +17,18 @@
       <td>
         <div class="input-group">
           <div class="input-group-prepend">
-            <button class="btn btn-outline-info productCountBtn" type="button" (click)="productService.removeProduct(kartItem.product)">-</button>
+            <button class="btn btn-outline-info productCountBtn" type="button"
+              (click)="productService.removeProduct(kartItem.product)">-</button>
           </div>
-		  <span type="text" disabled class="productCountText">{{ kartItem.count }}</span>
-		  <div class="input-group-append">
-			  <button class="btn btn-outline-info productCountBtn" type="button" (click)="productService.addProduct(kartItem.product)">+</button>
-		  </div>
+          <span type="text" disabled class="productCountText">{{ kartItem.count }}</span>
+          <div class="input-group-append">
+            <button class="btn btn-outline-info productCountBtn" type="button"
+              (click)="productService.addProduct(kartItem.product)">+</button>
+          </div>
         </div>
       </td>
       <td>
-        {{ productService.getProductTotal(kartItem) | async | currency: 'CHF '}}
+        {{ productService.getProductTotal(kartItem) | currency: 'CHF '}}
       </td>
     </tr>
     <tr class="bg-white">
@@ -35,4 +37,4 @@
     </tr>
   </tbody>
 </table>
-<a routerLink="/checkout" class="btn btn-gucci" *ngIf="shoppingKartLength | async">Checkout</a>
+<a routerLink="/checkout" class="btn btn-gucci" *ngIf="shoppingKart | async">Checkout</a>
