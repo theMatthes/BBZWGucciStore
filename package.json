@@ -2,8 +2,7 @@
   "name": "bbzwgucci-store",
   "version": "0.0.0",
   "scripts": {
-    "start": "ng build && tsc --p tsconfig.backend.json && node backend.ts",
-    "tsc": "tsc backend.ts",
+    "start": "ng build && tsc backend.ts && node backend",
     "test": "ng test"
   },
   "private": true,

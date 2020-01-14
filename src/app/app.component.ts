@@ -1,5 +1,5 @@
 import { Component, ModuleWithProviders, OnInit, OnDestroy } from '@angular/core';
-import { ProductService, IShoppingKartItem } from './products.service';
+import { ProductService } from './products.service';
 import { Observer, Observable, Subscription } from 'rxjs';
 
 @Component({

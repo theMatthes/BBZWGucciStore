@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService, Product } from '../products.service';
-import { RouteConfigLoadEnd, ParamMap, ActivatedRoute } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { ProductService } from '../products.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-details',
@@ -14,7 +13,7 @@ export class DetailsComponent implements OnInit {
   }
   ngOnInit() {
     console.log(this.route.snapshot.params.id);
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe(() => {
     });
     // this.route.paramMap.pipe(
     //   switchMap((value: ParamMap, index: number) => {
