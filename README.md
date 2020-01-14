@@ -1,20 +1,12 @@
 ## Installation
-Nach dem Klonen des Git-Repositories könenn Sie die benötigten Node-Module mit `npm i` installiert werden 
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Nach dem Klonen des Git-Repositories können Sie die benötigten Node-Module mit `npm i` installieren. 
 
 ## Starten
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Das Projekt kann mit `npm start` gestartet werden.
+Dieser Command fürt intern folgenden Befehl aus:
+`ng build && tsc backend.ts && node backend.ts`
 
-## Running unit tests
+## Testen
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Die automatisierten Unit-Tests können mit `npm test` ausgeführt werden.

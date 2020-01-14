@@ -19,7 +19,7 @@ export class BasketComponent {
   }
   public refreshGrandTotal() {
     this.grandTotal = this.productService.getGrandTotal();
-    // this.shoppingKart = this.productService.getShoppingKart();
+    this.shoppingKart = this.productService.getShoppingKart();
     this.shoppingKartLength = this.productService.getShoppingKartLength();
   }
 }

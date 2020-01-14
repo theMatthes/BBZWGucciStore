@@ -2,12 +2,8 @@
   "name": "bbzwgucci-store",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "start": "ng build && tsc --p tsconfig.backend.json && node backend.ts",
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {
@@ -22,11 +18,9 @@
     "@angular/router": "~8.2.14",
     "@ng-bootstrap/ng-bootstrap": "^5.1.5",
     "@sweetalert2/ngx-sweetalert2": "^7.2.0",
-    "body-parser": "^1.19.0",
     "bootstrap": "^4.4.1",
     "express-session": "^1.17.0",
     "install": "^0.13.0",
-    "ngx-cookie-service": "^2.3.0",
     "npm": "^6.13.6",
     "rxjs": "~6.4.0",
     "sweetalert2": "^9.5.4",
@@ -39,7 +33,7 @@
     "@angular/language-service": "~8.2.14",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
-    "@types/node": "~8.9.4",
+    "@types/node": "~13.0",
     "codelyzer": "^5.2.1",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
