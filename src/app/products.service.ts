@@ -2,36 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { Observable, Subject } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Product, IShoppingKartItem } from './_types/Product';
 
-export interface IShoppingKartItem {
-  count: number;
-  productId: number;
-  product?: Product;
-}
-export class Product {
-  public id: number;
-  public name: string;
-  public description: string;
-  public image: string;
-  public price: number;
-  public discontPrice: number;
-  public getActualPrice(): number {
-    return 1;
-  }
-  constructor(id: number, name: string, description: string, image: string, price: number) {
-    this.id = id;
-    this.name = name;
-    this.description = description;
-    this.image = image;
-    this.price = price;
-    this.discontPrice = Math.round((this.price * .9) / 100) * 100 - 1;
-  }
-}
+// https://itnext.io/how-to-create-a-service-with-httpclient-and-injectable-in-angular-9-8-e3cc50c24c83
 @Injectable({
   providedIn: 'root',
 })
-// https://itnext.io/how-to-create-a-service-with-httpclient-and-injectable-in-angular-9-8-e3cc50c24c83
 export class ProductService {
   private static products: Array<Product> = [];
   private static shoppingKart: Array<IShoppingKartItem> = [];

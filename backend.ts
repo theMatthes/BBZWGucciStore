@@ -1,8 +1,7 @@
 import * as express from 'express';
 import * as path from 'path';
 import * as session from 'express-session';
-import { IShoppingKartItem } from 'src/app/products.service';
-import { empty } from 'rxjs';
+import { IShoppingKartItem } from './src/app/_types/Product';
 
 const app = express();
 const sess = {
