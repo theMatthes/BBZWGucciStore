@@ -20,7 +20,7 @@ if (app.get('env') === 'production') {
 
 app.use(session(sess));
 
-app.post('/api/checkout', (req, res) => {
+app.get('/api/checkout', (req, res) => {
   res.send(JSON.stringify(res.post));
 });
 app.get('/api/shoppingKart', (req, res) => {
