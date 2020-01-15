@@ -1,45 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { AppComponent } from './app.component';
+import { Observable, Subject } from 'rxjs';
+import { Product, IShoppingKartItem } from './_types/Product';
 
-export interface IShoppingKartItem {
-  count: number;
-  product: Product;
-}
-export class Product {
-  public id: number;
-  public name: string;
-  public description: string;
-  public image: string;
-  public price: number;
-  public discontPrice: number;
-  public getActualPrice(): number {
-    return 1;
-  }
-  constructor(id: number, name: string, description: string, image: string, price: number) {
-    this.id = id;
-    this.name = name;
-    this.description = description;
-    this.image = image;
-    this.price = price;
-    this.discontPrice = Math.round((this.price * .9) / 100) * 100 - 1;
-  }
-}
+// https://itnext.io/how-to-create-a-service-with-httpclient-and-injectable-in-angular-9-8-e3cc50c24c83
 @Injectable({
   providedIn: 'root',
 })
-// https://itnext.io/how-to-create-a-service-with-httpclient-and-injectable-in-angular-9-8-e3cc50c24c83
 export class ProductService {
   private static products: Array<Product> = [];
   private static shoppingKart: Array<IShoppingKartItem> = [];
+  public kartSubject = new Subject<IShoppingKartItem>();
   // private static http: HttpClient;
   constructor(private http: HttpClient) { }
-  // constructor(@Optional() http: HttpClient) {
-  //   if (http) { ProductService.http = http; }
-  // }
   public async getProducts(): Promise<Array<Product>> {
     if (!ProductService.products.length) {
       const body: Array<any> = await this.http.get('/assets/products.json').toPromise() as Array<any>;
-      console.log(body);
       body.forEach((product => {
         ProductService.products.push(new Product(
           product[0],
@@ -48,10 +25,15 @@ export class ProductService {
           product[3],
           product[4]
         ));
-      }).bind(this));
-      console.log(ProductService.products);
+      }));
     }
     return ProductService.products;
+  }
+  shoppingKartChange(): Observable<any> {
+    return this.kartSubject.asObservable();
+  }
+  onKartUpdate(kartItem?: IShoppingKartItem) {
+    this.kartSubject.next();
   }
   public getPrice() {
     let sum: number;
@@ -59,38 +41,45 @@ export class ProductService {
       sum += element.price;
     });
   }
-  public getProductByID(id: number): Product {
-    for (const product of ProductService.products) {
-      if (+product.id === +id) {
-        return product;
+  public async getProductByID(id: number) {
+    for (const kartItem of await this.getProducts()) {
+      if (+kartItem.id === +id) {
+        return kartItem;
       }
     }
     return null;
   }
-  public async getShoppingKart() {
-    const body: Array<any> = await this.http.get('/api/shoppingKart').toPromise() as Array<any>;
-  
-    return ProductService.shoppingKart.sort();
+  public async getShoppingKart(full = false) {
+    const kart: Array<IShoppingKartItem> = [];
+    const body: Array<any> = await this.http.get('/api/shoppingKart').toPromise() as Array<IShoppingKartItem>;
+    for (const product of body) {
+      product.product = await this.getProductByID(product.productId);
+      kart.push(product);
+      // switchMap(this.kartSubject)
+      // this.kartSubject.switchMap();
+    }
+    return kart;
   }
-  public getShoppingKartLength(): number {
+  public async getShoppingKartLength() {
     let count = 0;
-    this.getShoppingKart().forEach(kartItem => {
+    for (const kartItem of (await this.getShoppingKart())) {
       count += kartItem.count;
-    });
+    }
     return count;
   }
   public getProductTotal(kartItem: IShoppingKartItem): number {
     return kartItem.product.discontPrice * kartItem.count;
   }
-  public getGrandTotal() {
-    const kart = this.getShoppingKart();
+  public async getGrandTotal() {
+    const kart = await this.getShoppingKart();
     let total = 0;
-    kart.forEach(kartItem => {
-      total += this.getProductTotal(kartItem);
-    });
+    for (const kartItem of kart) {
+      total += await this.getProductTotal(kartItem);
+    }
     return total;
   }
-  public addProduct(newProduct: Product) {
+  public async addProduct(newProduct: Product) {
+    await this.http.get('/api/shoppingKart/add/' + newProduct.id).toPromise();
     let alreadyIsInKart = false;
     ProductService.shoppingKart.forEach(kartItem => {
       if (kartItem.product === newProduct) {
@@ -101,12 +90,15 @@ export class ProductService {
     if (!alreadyIsInKart) {
       const productToAdd: IShoppingKartItem = {
         count: 1,
+        productId: newProduct.id,
         product: newProduct
       };
       ProductService.shoppingKart.push(productToAdd);
     }
+    this.onKartUpdate();
   }
-  public removeProduct(oldProduct: Product) {
+  public async removeProduct(oldProduct: Product) {
+    await this.http.get('/api/shoppingKart/remove/' + oldProduct.id).toPromise();
     ProductService.shoppingKart.forEach((kartItem, index, array) => {
       if (kartItem.product === oldProduct) {
         kartItem.count -= 1;
@@ -116,6 +108,7 @@ export class ProductService {
         }
       }
     });
+    this.onKartUpdate();
   }
   clearKart() {
     ProductService.shoppingKart = [];
