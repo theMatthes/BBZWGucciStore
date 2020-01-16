@@ -1,30 +1,32 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Pipe, PipeTransform, Inject, LOCALE_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { Observable, Subject } from 'rxjs';
-import { Product, IShoppingKartItem } from './_types/Product';
+import { getCurrencySymbol, formatCurrency } from '@angular/common';
+import { IProduct, IShoppingKartItem } from 'Types';
 
 // https://itnext.io/how-to-create-a-service-with-httpclient-and-injectable-in-angular-9-8-e3cc50c24c83
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  private static products: Array<Product> = [];
+  private static products: Array<IProduct> = [];
   private static shoppingKart: Array<IShoppingKartItem> = [];
   public kartSubject = new Subject<IShoppingKartItem>();
   // private static http: HttpClient;
   constructor(private http: HttpClient) { }
-  public async getProducts(): Promise<Array<Product>> {
+  public async getProducts(): Promise<Array<IProduct>> {
     if (!ProductService.products.length) {
       const body: Array<any> = await this.http.get('/assets/products.json').toPromise() as Array<any>;
       body.forEach((product => {
-        ProductService.products.push(new Product(
-          product[0],
-          product[1],
-          product[2],
-          product[3],
-          product[4]
-        ));
+        ProductService.products.push({
+          id: product[0],
+          name: product[1],
+          description: product[2],
+          image: product[3],
+          price: product[4],
+          discontPrice: product[5]
+        } as IProduct);
       }));
     }
     return ProductService.products;
@@ -78,7 +80,7 @@ export class ProductService {
     }
     return total;
   }
-  public async addProduct(newProduct: Product) {
+  public async addProduct(newProduct: IProduct) {
     await this.http.get('/api/shoppingKart/add/' + newProduct.id).toPromise();
     let alreadyIsInKart = false;
     ProductService.shoppingKart.forEach(kartItem => {
@@ -97,7 +99,7 @@ export class ProductService {
     }
     this.onKartUpdate();
   }
-  public async removeProduct(oldProduct: Product) {
+  public async removeProduct(oldProduct: IProduct) {
     await this.http.get('/api/shoppingKart/remove/' + oldProduct.id).toPromise();
     ProductService.shoppingKart.forEach((kartItem, index, array) => {
       if (kartItem.product === oldProduct) {

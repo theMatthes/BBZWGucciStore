@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators, FormGroup } from '@angular/forms';
 import { HttpClient, HttpUrlEncodingCodec, HttpParams } from '@angular/common/http';
 import { ProductService } from '../products.service';
-import { IFormValidationResponse } from '../_types/Product';
-import { types } from 'util';
 import Swal from 'sweetalert2';
+import { IFormValidationResponse } from 'Types';
 
 @Component({
   selector: 'app-checkout',
@@ -34,8 +33,8 @@ export class CheckoutComponent implements OnInit {
         Validators.minLength(2)
       ]),
       email: new FormControl('', [
-        // Validators.required,
-        // Validators.email,
+        Validators.required,
+        Validators.email,
       ])
     });
   }
@@ -57,6 +56,12 @@ export class CheckoutComponent implements OnInit {
           msg += `Der Wert des Feldes ${invProperty} ist ungültig!\n`;
         }
         Swal.fire('Fehler', msg, 'warning');
+      } else {
+        Swal.fire(
+          'Danke für den Einkauf',
+          'Die Produkte wurden erfolgreich bestellt, wir benachrigen Sie per Mail, wenn die Produkte verfügbar sind.',
+          'success'
+        );
       }
     });
     // Process checkout data here

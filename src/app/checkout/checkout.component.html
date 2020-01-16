@@ -1,6 +1,3 @@
-<button [swal]="['Oops!', 'This is not implemented yet :/', 'warning']">
-  Do it!
-</button>
 <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
   <ul class="formErrors">
     <li class="text-danger" *ngIf="submitted && !checkoutForm.controls.firstname.valid">

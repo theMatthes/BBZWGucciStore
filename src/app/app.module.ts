@@ -32,7 +32,7 @@ const appRoutes: Routes = [
     CheckoutComponent,
   ],
   imports: [
-    SweetAlert2Module.forRoot(),
+    // SweetAlert2Module.forRoot(),
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: false }
