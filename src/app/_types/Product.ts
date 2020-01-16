@@ -3,6 +3,9 @@ export interface IShoppingKartItem {
   productId: number;
   product?: Product;
 }
+export interface IFormValidationResponse {
+  invalid: Array<string>;
+}
 export class Product {
   public id: number;
   public name: string;

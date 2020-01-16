@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators, FormGroup } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpUrlEncodingCodec, HttpParams } from '@angular/common/http';
 import { ProductService } from '../products.service';
+import { IFormValidationResponse } from '../_types/Product';
+import { types } from 'util';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-checkout',
@@ -24,27 +27,38 @@ export class CheckoutComponent implements OnInit {
     this.checkoutForm = new FormGroup({
       lastname: new FormControl('', [
         Validators.required,
-      Validators.minLength(2)
-    ]),
+        Validators.minLength(2)
+      ]),
       firstname: new FormControl('', [
         Validators.required,
-      Validators.minLength(2)
-    ]),
+        Validators.minLength(2)
+      ]),
       email: new FormControl('', [
-        Validators.required,
-        Validators.email,
+        // Validators.required,
+        // Validators.email,
       ])
     });
   }
-  onSubmit() {
+  async onSubmit() {
     if (this.checkoutForm.invalid) {
       this.submitted = true;
       // this.checkoutForm.controls.lastname.show = true;
       return false;
     }
-    // const req = this.http.post<object>('api/checkout',
-    //   customerData);
-    // req.subscribe((res) => { console.log(res); });
+    const params = new HttpParams()
+      .set('firstname', this.checkoutForm.controls.firstname.value)
+      .set('lastname', this.checkoutForm.controls.lastname.value)
+      .set('email', this.checkoutForm.controls.email.value);
+    const req = await this.http.get('/api/checkout', { params }).toPromise().then((rawRes) => {
+      const typedRes = rawRes as IFormValidationResponse;
+      if (typedRes.invalid && typedRes.invalid.length) {
+        let msg = '';
+        for (const invProperty of typedRes.invalid) {
+          msg += `Der Wert des Feldes ${invProperty} ist ungültig!\n`;
+        }
+        Swal.fire('Fehler', msg, 'warning');
+      }
+    });
     // Process checkout data here
     console.warn('Your order has been submitted', this.checkoutForm);
 

@@ -2,7 +2,9 @@ import * as express from 'express';
 import * as path from 'path';
 import * as session from 'express-session';
 import { IShoppingKartItem } from './src/app/_types/Product';
-
+// Original angular email validation regex.
+// tslint:disable-next-line: max-line-length
+const EMAIL_REGEXP = /^(?=.{1,254}$)(?=.{1,64}@)[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 const app = express();
 const sess = {
   secret: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
@@ -21,7 +23,20 @@ if (app.get('env') === 'production') {
 app.use(session(sess));
 
 app.get('/api/checkout', (req, res) => {
-  res.send(JSON.stringify(res.post));
+  const resJson = {
+    invalid: []
+  };
+  if (typeof req.query.firstname !== 'string' || req.query.length < 2) {
+    resJson.invalid.push('Vorname');
+  }
+  if (typeof req.query.lastname !== 'string' || req.query.length < 2) {
+    resJson.invalid.push('Nachname');
+  }
+  if (typeof req.query.email !== 'string' || !req.query.email.match(EMAIL_REGEXP)) {
+    resJson.invalid.push('E-Mail');
+  }
+
+  res.send(JSON.stringify(resJson));
 });
 app.get('/api/shoppingKart', (req, res) => {
   if (!req.session.kartItems) {
