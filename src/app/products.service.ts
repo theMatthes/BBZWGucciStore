@@ -15,7 +15,7 @@ export class ProductService {
   constructor(private http: HttpClient) { }
   public async getProducts(): Promise<Array<IProduct>> {
     if (!ProductService.products.length) {
-      const body: Array<any> = await this.http.get('/assets/products.json').toPromise() as Array<any>;
+      const body: Array<any> = await this.http.get('/assets/products.json', { withCredentials: true }).toPromise() as Array<any>;
       body.forEach((product => {
         ProductService.products.push({
           id: product[0],
@@ -51,7 +51,8 @@ export class ProductService {
   }
   public async getShoppingKart() {
     const kart: Array<IShoppingKartItem> = [];
-    const body: Array<any> = await this.http.get('http://localhost:3000/api/shoppingKart').toPromise() as Array<IShoppingKartItem>;
+    const body: Array<any> = await this.http.get('http://localhost:3000/api/shoppingKart', { withCredentials: true })
+      .toPromise() as Array<IShoppingKartItem>;
     for (const product of body) {
       product.product = await this.getProductByID(product.productId);
       kart.push(product);
@@ -77,11 +78,15 @@ export class ProductService {
     return total;
   }
   public async addProduct(newProduct: IProduct) {
-    await this.http.get('http://localhost:3000/api/shoppingKart/add/' + newProduct.id).toPromise();
+    await this.http.get('http://localhost:3000/api/shoppingKart/add/' + newProduct.id, { withCredentials: true }).toPromise();
     this.onKartUpdate();
   }
   public async removeProduct(oldProduct: IProduct) {
-    await this.http.get('/api/shoppingKart/remove/' + oldProduct.id).toPromise();
+    await this.http.get('http://localhost:3000/api/shoppingKart/remove/' + oldProduct.id, { withCredentials: true }).toPromise();
+    this.onKartUpdate();
+  }
+  public async resetKart() {
+    await this.http.get('http://localhost:3000/api/shoppingKart/reset', { withCredentials: true }).toPromise();
     this.onKartUpdate();
   }
 }

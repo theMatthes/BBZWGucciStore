@@ -22,7 +22,8 @@ if (app.get('env') === 'production') {
 
 app.use(session(sess));
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Origin', 'http://localhost:9876');
+  res.header('Access-Control-Allow-Credentials', 'true');
   next();
 });
 
@@ -83,6 +84,10 @@ app.get('/api/shoppingKart/remove/:id', (req, res) => {
       }
     }
   });
+  res.send('1');
+});
+app.get('/api/shoppingKart/reset', (req, res) => {
+  req.session.kartItems = [];
   res.send('1');
 });
 // app.get('/api/price')

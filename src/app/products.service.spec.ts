@@ -1,7 +1,6 @@
 import { TestBed, async } from '@angular/core/testing';
 import { ProductService } from './products.service';
-import { HttpClient, HttpHandler } from '@angular/common/http';
-// import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 describe('ProductService', () => {
   beforeEach(async(() => {
@@ -19,6 +18,7 @@ describe('ProductService', () => {
   it('should stack items', async () => {
     const service: ProductService = TestBed.get(ProductService);
     const products = await service.getProducts();
+    await service.resetKart();
     await service.addProduct(products[0]);
     await service.addProduct(products[0]);
     console.log((await service.getShoppingKart()));
@@ -27,8 +27,9 @@ describe('ProductService', () => {
   it('should calculate the total price', async () => {
     const service: ProductService = TestBed.get(ProductService);
     const products = await service.getProducts();
+    await service.resetKart();
     await service.addProduct(products[0]);
     await service.addProduct(products[0]);
-    expect((await service.getGrandTotal())).toEqual(11308);
+    expect((await service.getGrandTotal())).toEqual(11398);
   });
 });
