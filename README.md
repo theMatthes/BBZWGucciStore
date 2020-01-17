@@ -1,5 +1,5 @@
 # BBZW Gucci Store
-Zwischen dem Frontend und Backend wird die Datei `Types.ts` geteilt. Darin sind alle Interfaces erfasst.
+Zwischen dem Frontend und Backend wird die Datei `backend/types.ts` geteilt. Darin sind alle Interfaces erfasst.
 ## Installation
 Nach dem Klonen des Git-Repositories können Sie die benötigten Node-Module mit `npm i` installieren. 
 ## Starten

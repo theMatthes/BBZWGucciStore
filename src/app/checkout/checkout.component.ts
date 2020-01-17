@@ -67,7 +67,7 @@ export class CheckoutComponent implements OnInit {
     // Process checkout data here
     console.warn('Your order has been submitted', this.checkoutForm);
 
-    this.productService.clearKart();
+    this.productService.resetKart();
     this.checkoutForm.reset();
   }
 
