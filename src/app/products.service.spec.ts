@@ -10,7 +10,6 @@ describe('ProductService', () => {
     })
       .compileComponents();
   }));
-
   it('should be created', () => {
     const service: ProductService = TestBed.get(ProductService);
     expect(service).toBeTruthy();

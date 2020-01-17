@@ -16,12 +16,13 @@ const sess = {
 };
 
 if (app.get('env') === 'production') {
-  app.set('trust proxy', 1); // trust first proxy
-  sess.cookie.secure = true; // serve secure cookies
+  app.set('trust proxy', 1);
+  sess.cookie.secure = true;
 }
 
 app.use(session(sess));
 app.use((req, res, next) => {
+  // I HATE CORS!!!!
   res.header('Access-Control-Allow-Origin', 'http://localhost:9876');
   res.header('Access-Control-Allow-Credentials', 'true');
   next();
