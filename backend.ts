@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as path from 'path';
 import * as session from 'express-session';
-import { IShoppingKartItem } from 'Types';
+import { IShoppingKartItem } from './types';
 // Original angular email validation regex.
 // tslint:disable-next-line: max-line-length
 const EMAIL_REGEXP = /^(?=.{1,254}$)(?=.{1,64}@)[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;

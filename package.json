@@ -2,7 +2,7 @@
   "name": "bbzwgucci-store",
   "version": "0.0.0",
   "scripts": {
-    "start": "ng build && tsc backend.ts && node backend",
+    "start": "tsc backend.ts && ng build && node backend",
     "test": "ng test"
   },
   "private": true,
@@ -19,6 +19,7 @@
     "@ng-bootstrap/ng-bootstrap": "^5.1.5",
     "@sweetalert2/ngx-sweetalert2": "^7.2.0",
     "bootstrap": "^4.4.1",
+    "core-util-is": "^1.0.2",
     "express-session": "^1.17.0",
     "install": "^0.13.0",
     "npm": "^6.13.6",

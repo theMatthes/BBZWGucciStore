@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ProductService } from '../products.service';
 import { Subscription } from 'rxjs';
-import { IShoppingKartItem } from 'Types';
+import { IShoppingKartItem } from '../../../types';
 
 @Component({
   selector: 'app-basket',

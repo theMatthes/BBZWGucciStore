@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, Validators, FormGroup } from '@angular/forms'
 import { HttpClient, HttpUrlEncodingCodec, HttpParams } from '@angular/common/http';
 import { ProductService } from '../products.service';
 import Swal from 'sweetalert2';
-import { IFormValidationResponse } from 'Types';
+import { IFormValidationResponse } from '../../../types';
 
 @Component({
   selector: 'app-checkout',

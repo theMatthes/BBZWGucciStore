@@ -1,9 +1,9 @@
-import { Injectable, Pipe, PipeTransform, Inject, LOCALE_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { Observable, Subject } from 'rxjs';
 import { getCurrencySymbol, formatCurrency } from '@angular/common';
-import { IProduct, IShoppingKartItem } from 'Types';
+import { IProduct, IShoppingKartItem } from '../../types';
 
 // https://itnext.io/how-to-create-a-service-with-httpclient-and-injectable-in-angular-9-8-e3cc50c24c83
 @Injectable({
