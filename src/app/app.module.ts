@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
-import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
@@ -32,7 +31,6 @@ const appRoutes: Routes = [
     CheckoutComponent,
   ],
   imports: [
-    // SweetAlert2Module.forRoot(),
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: false }

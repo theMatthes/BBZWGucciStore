@@ -2,8 +2,9 @@
   "name": "bbzwgucci-store",
   "version": "0.0.0",
   "scripts": {
-    "start": "tsc backend.ts && ng build && node backend",
-    "test": "ng test"
+    "start": "npm run compileBackend && ng build && node backend/server",
+    "test": "npm run && ng test",
+    "compileBackend": "tsc --p backend/tsconfig.json"
   },
   "private": true,
   "dependencies": {
@@ -22,6 +23,7 @@
     "core-util-is": "^1.0.2",
     "express-session": "^1.17.0",
     "install": "^0.13.0",
+    "mocha": "^7.0.0",
     "npm": "^6.13.6",
     "rxjs": "~6.5.4",
     "sweetalert2": "^9.5.4",

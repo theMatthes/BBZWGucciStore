@@ -1,18 +1,34 @@
 import { TestBed, async } from '@angular/core/testing';
-
 import { ProductService } from './products.service';
 import { HttpClient, HttpHandler } from '@angular/common/http';
-
+// import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpClientModule } from '@angular/common/http';
 describe('ProductService', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      providers: [HttpClient, HttpHandler]
+      imports: [HttpClientModule],
+      providers: [HttpClient]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   it('should be created', () => {
     const service: ProductService = TestBed.get(ProductService);
     expect(service).toBeTruthy();
+  });
+  it('should stack items', async () => {
+    const service: ProductService = TestBed.get(ProductService);
+    const products = await service.getProducts();
+    await service.addProduct(products[0]);
+    await service.addProduct(products[0]);
+    console.log((await service.getShoppingKart()));
+    expect((await service.getShoppingKart())[0].count).toEqual(2);
+  });
+  it('should calculate the total price', async () => {
+    const service: ProductService = TestBed.get(ProductService);
+    const products = await service.getProducts();
+    await service.addProduct(products[0]);
+    await service.addProduct(products[0]);
+    expect((await service.getGrandTotal())).toEqual(11308);
   });
 });

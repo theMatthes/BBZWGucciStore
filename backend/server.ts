@@ -21,6 +21,10 @@ if (app.get('env') === 'production') {
 }
 
 app.use(session(sess));
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
 
 app.get('/api/checkout', (req, res) => {
   const resJson = {
@@ -84,11 +88,11 @@ app.get('/api/shoppingKart/remove/:id', (req, res) => {
 // app.get('/api/price')
 
 
-app.use(express.static(path.join(__dirname, '/dist/BBZWGucciStore')));
+app.use(express.static(path.join(__dirname, '../dist/BBZWGucciStore')));
 
 // app.use('/data', < your route file > );
 app.use((req, res) => {
-  res.sendFile(path.join(__dirname, '/dist/BBZWGucciStore', 'index.html'));
+  res.sendFile(path.join(__dirname, '../dist/BBZWGucciStore', 'index.html'));
 });
 app.listen(3000, () => {
   console.log('Example app listening on port 3000!');

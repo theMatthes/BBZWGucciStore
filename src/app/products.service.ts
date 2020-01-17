@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AppComponent } from './app.component';
 import { Observable, Subject } from 'rxjs';
-import { getCurrencySymbol, formatCurrency } from '@angular/common';
-import { IProduct, IShoppingKartItem } from '../../types';
+import { IProduct, IShoppingKartItem } from '../../backend/types';
 
 // https://itnext.io/how-to-create-a-service-with-httpclient-and-injectable-in-angular-9-8-e3cc50c24c83
 @Injectable({
@@ -34,7 +32,7 @@ export class ProductService {
   shoppingKartChange(): Observable<any> {
     return this.kartSubject.asObservable();
   }
-  onKartUpdate(kartItem?: IShoppingKartItem) {
+  onKartUpdate() {
     this.kartSubject.next();
   }
   public getPrice() {
@@ -51,14 +49,12 @@ export class ProductService {
     }
     return null;
   }
-  public async getShoppingKart(full = false) {
+  public async getShoppingKart() {
     const kart: Array<IShoppingKartItem> = [];
-    const body: Array<any> = await this.http.get('/api/shoppingKart').toPromise() as Array<IShoppingKartItem>;
+    const body: Array<any> = await this.http.get('http://localhost:3000/api/shoppingKart').toPromise() as Array<IShoppingKartItem>;
     for (const product of body) {
       product.product = await this.getProductByID(product.productId);
       kart.push(product);
-      // switchMap(this.kartSubject)
-      // this.kartSubject.switchMap();
     }
     return kart;
   }
@@ -81,38 +77,11 @@ export class ProductService {
     return total;
   }
   public async addProduct(newProduct: IProduct) {
-    await this.http.get('/api/shoppingKart/add/' + newProduct.id).toPromise();
-    let alreadyIsInKart = false;
-    ProductService.shoppingKart.forEach(kartItem => {
-      if (kartItem.product === newProduct) {
-        kartItem.count += 1;
-        alreadyIsInKart = true;
-      }
-    });
-    if (!alreadyIsInKart) {
-      const productToAdd: IShoppingKartItem = {
-        count: 1,
-        productId: newProduct.id,
-        product: newProduct
-      };
-      ProductService.shoppingKart.push(productToAdd);
-    }
+    await this.http.get('http://localhost:3000/api/shoppingKart/add/' + newProduct.id).toPromise();
     this.onKartUpdate();
   }
   public async removeProduct(oldProduct: IProduct) {
     await this.http.get('/api/shoppingKart/remove/' + oldProduct.id).toPromise();
-    ProductService.shoppingKart.forEach((kartItem, index, array) => {
-      if (kartItem.product === oldProduct) {
-        kartItem.count -= 1;
-        if (kartItem.count < 1) {
-          console.log(kartItem.count, index, array);
-          array.splice(index, 1);
-        }
-      }
-    });
     this.onKartUpdate();
-  }
-  clearKart() {
-    ProductService.shoppingKart = [];
   }
 }
